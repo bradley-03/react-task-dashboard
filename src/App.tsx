@@ -1,8 +1,10 @@
+import { TaskContextProvider } from "../context/TaskContext"
+
 function App() {
   return (
-    <>
-      <h1 className="">Test</h1>
-    </>
+    <TaskContextProvider>
+      <h1>Hello World</h1>
+    </TaskContextProvider>
   )
 }
 
