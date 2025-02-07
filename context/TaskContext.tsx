@@ -1,16 +1,29 @@
 import React, { createContext, useState } from "react"
-import { Task } from "../types/Task"
+import { Task, TaskFormData } from "../types/Task"
 
 type TaskContextProviderProps = {
   children: React.ReactNode
 }
 
-export const TaskContext = createContext<{ tasks: Task[]; createTask: () => void }>({ tasks: [], createTask: () => {} })
+export const TaskContext = createContext<{ tasks: Task[]; createTask: (taskData: TaskFormData) => void }>({
+  tasks: [],
+  createTask: () => {
+    throw new Error("createTask must be used within a TaskContextProvider")
+  },
+})
 
 export function TaskContextProvider({ children }: TaskContextProviderProps) {
   const [tasks, setTasks] = useState<Task[]>([])
 
-  function createTask() {}
+  function createTask(taskData: TaskFormData) {
+    setTasks(prevTasks => [
+      ...prevTasks,
+      {
+        id: crypto.randomUUID(),
+        title: taskData.title,
+      },
+    ])
+  }
 
   const contextValue = {
     tasks,
