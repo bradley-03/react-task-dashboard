@@ -1,10 +1,7 @@
 import { TaskContext, TaskContextProvider } from "./TaskContext"
 import React, { useContext } from "react"
 import { render, screen, waitFor, fireEvent } from "@testing-library/react"
-import "@testing-library/jest-dom"
-import { randomUUID } from "node:crypto"
-
-window.crypto.randomUUID = jest.fn(randomUUID)
+import { describe, it, expect } from "vitest"
 
 function TestComponent() {
   const { tasks, createTask } = useContext(TaskContext)
@@ -20,7 +17,7 @@ function TestComponent() {
 }
 
 describe("TaskContext", () => {
-  test("renders children correctly", () => {
+  it("renders children correctly", () => {
     render(
       <TaskContextProvider>
         <TestComponent />
@@ -30,7 +27,7 @@ describe("TaskContext", () => {
     expect(screen.getByTestId("tasks-count")).toHaveTextContent("Tasks: 0")
   })
 
-  test("adds a task when createTask is called", async () => {
+  it("adds a task when createTask is called", async () => {
     render(
       <TaskContextProvider>
         <TestComponent />
