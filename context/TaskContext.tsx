@@ -21,6 +21,10 @@ export function TaskContextProvider({ children }: TaskContextProviderProps) {
       {
         id: crypto.randomUUID(),
         title: taskData.title,
+        description: taskData.description,
+        priority: taskData.priority,
+        completed: false,
+        createdAt: new Date(),
       },
     ])
   }
