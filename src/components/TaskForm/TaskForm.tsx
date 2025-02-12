@@ -13,6 +13,7 @@ export default function TaskForm() {
       title: formData.get("title") as string,
       priority: formData.get("priority") as "low" | "medium" | "high",
       description: formData.get("description") as string,
+      due: formData.get("due") as unknown as Date,
     }
 
     createTask(newTaskData)
@@ -36,6 +37,9 @@ export default function TaskForm() {
         <option value="high">High</option>
       </select>
       <br />
+      <label htmlFor="due">Due</label>
+      <br />
+      <input type="date" name="due" id="due" required />
       <button className="bg-blue-500 p-2 rounded text-white hover:bg-blue-600 transition cursor-pointer">
         Create Task
       </button>
