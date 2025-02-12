@@ -39,7 +39,7 @@ export default function TaskForm() {
       <br />
       <label htmlFor="due">Due</label>
       <br />
-      <input type="date" name="due" id="due" required />
+      <input type="date" name="due" id="due" />
       <button className="bg-blue-500 p-2 rounded text-white hover:bg-blue-600 transition cursor-pointer">
         Create Task
       </button>

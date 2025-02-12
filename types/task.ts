@@ -4,7 +4,7 @@ export type Task = {
   description?: string
   priority: "low" | "medium" | "high"
   createdAt: Date
-  due: Date
+  due?: Date
   status: "pending" | "in progress" | "completed" | "overdue"
 }
 
