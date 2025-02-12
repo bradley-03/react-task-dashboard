@@ -16,7 +16,7 @@ export default function TaskItem({ itemData }: TaskItemProps) {
 
   return (
     <div className="border-1 m-2 flex flex-col justify-center items-center gap-1 p-2">
-      <p>Due: {itemData.due.toLocaleString()}</p>
+      <p>Due: {itemData.due?.toLocaleString()}</p>
       <p>status: {itemData.status}</p>
       <p>{itemData.createdAt.toLocaleString()}</p>
       <h2>{itemData.title}</h2>
