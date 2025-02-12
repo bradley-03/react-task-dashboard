@@ -9,7 +9,7 @@ function TestComponent() {
   return (
     <>
       <p data-testid="tasks-count">Tasks: {tasks.length}</p>
-      <button data-testid="create-btn" onClick={() => createTask({ title: "New Task" })}>
+      <button data-testid="create-btn" onClick={() => createTask({ title: "New Task", priority: "low" })}>
         Add Task
       </button>
     </>
