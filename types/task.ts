@@ -9,3 +9,4 @@ export type Task = {
 }
 
 export type TaskFormData = Omit<Task, "id" | "status" | "createdAt">
+export type EditTaskFormData = Omit<Task, "id" | "createdAt">

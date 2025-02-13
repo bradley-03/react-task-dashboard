@@ -2,9 +2,10 @@ import { Task } from "../../../types/Task"
 
 type TaskItemProps = {
   itemData: Task
+  onEdit: (taskId: string) => void
 }
 
-export default function TaskItem({ itemData }: TaskItemProps) {
+export default function TaskItem({ itemData, onEdit }: TaskItemProps) {
   const priorityClass =
     itemData.priority === "low"
       ? "bg-slate-500 text-white"
@@ -22,6 +23,9 @@ export default function TaskItem({ itemData }: TaskItemProps) {
       <h2>{itemData.title}</h2>
       <p>{itemData.description}</p>
       <h2 className={`rounded-full px-2 ${priorityClass}`}>{itemData.priority}</h2>
+      <button onClick={() => onEdit(itemData.id)} className="bg-sky-500 text-white cursor-pointer rounded p-2">
+        Edit
+      </button>
     </div>
   )
 }
