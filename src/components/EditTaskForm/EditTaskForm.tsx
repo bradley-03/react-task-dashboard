@@ -21,7 +21,7 @@ export default function EditTaskForm({ initialData, onEdit }: EditTaskFormProps)
       priority: formData.get("priority") as "low" | "medium" | "high",
       description: formData.get("description") as string,
       due: formData.get("due") as unknown as Date,
-      status: formData.get("status") as "pending" | "in progress" | "completed" | "overdue",
+      status: formData.get("status") as "pending" | "in progress" | "completed",
     }
 
     editTask(initialData.id, newTaskData)
@@ -76,7 +76,6 @@ export default function EditTaskForm({ initialData, onEdit }: EditTaskFormProps)
           <option value="pending">Pending</option>
           <option value="in progress">In Progress</option>
           <option value="completed">Completed</option>
-          <option value="overdue">Overdue</option>
         </select>
         <br />
         <button className="bg-blue-500 p-2 rounded text-white hover:bg-blue-600 transition cursor-pointer">

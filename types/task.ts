@@ -5,7 +5,7 @@ export type Task = {
   priority: "low" | "medium" | "high"
   createdAt: Date
   due?: Date
-  status: "pending" | "in progress" | "completed" | "overdue"
+  status: "pending" | "in progress" | "completed"
 }
 
 export type TaskFormData = Omit<Task, "id" | "status" | "createdAt">
