@@ -10,6 +10,7 @@ export const TaskContext = createContext<{
   tasks: Task[]
   createTask: (taskData: TaskFormData) => void
   editTask: (taskId: string, updatedTaskData: EditTaskFormData) => void
+  deleteTask: (taskId: string) => void
 }>({
   tasks: [],
   createTask: () => {
@@ -17,6 +18,9 @@ export const TaskContext = createContext<{
   },
   editTask: () => {
     throw new Error("editTask must be used within a TaskContextProvider")
+  },
+  deleteTask: () => {
+    throw new Error("deleteTask must be used within a TaskContextProvider")
   },
 })
 
@@ -55,10 +59,15 @@ export function TaskContextProvider({ children }: TaskContextProviderProps) {
     )
   }
 
+  function deleteTask(taskId: string) {
+    setTasks(prevTasks => prevTasks.filter(task => task.id !== taskId))
+  }
+
   const contextValue = {
     tasks,
     createTask,
     editTask,
+    deleteTask,
   }
 
   return <TaskContext.Provider value={contextValue}>{children}</TaskContext.Provider>

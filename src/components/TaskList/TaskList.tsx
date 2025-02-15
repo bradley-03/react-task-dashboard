@@ -5,36 +5,60 @@ import Modal from "../Modal/Modal"
 import EditTaskForm from "../EditTaskForm/EditTaskForm"
 import { Task } from "../../../types/Task"
 
-type ModalDataState = {
+type ModalState = {
   open: boolean
   taskId: string | undefined
+  action: "edit" | "delete" | undefined
 }
 
 export default function TaskList() {
-  const [editModal, setEditModal] = useState<ModalDataState>({ open: false, taskId: undefined })
-  const { tasks } = useContext(TaskContext)
+  const [modalData, setModalData] = useState<ModalState>({ open: false, taskId: undefined, action: undefined })
+  const { tasks, deleteTask } = useContext(TaskContext)
 
   function handleEdit(taskId: string) {
-    setEditModal({ open: true, taskId })
+    setModalData({ open: true, taskId, action: "edit" })
+  }
+
+  function handleDeleteModal(taskId: string) {
+    setModalData({ open: true, taskId, action: "delete" })
+  }
+
+  function handleDeletion(taskId: string) {
+    deleteTask(taskId)
+    setModalData({ open: false, taskId: undefined, action: undefined })
   }
 
   function handleModalClose() {
-    setEditModal({ taskId: undefined, open: false })
+    setModalData({ taskId: undefined, open: false, action: undefined })
   }
 
   return (
     <div>
       <h1>All Tasks ({tasks.length})</h1>
-      <Modal isOpen={editModal.open} onClose={handleModalClose} title="Edit Task">
-        {editModal.taskId && (
+      <Modal isOpen={modalData.open} onClose={handleModalClose} title="Edit Task">
+        {modalData.action === "edit" && modalData.taskId && (
           <EditTaskForm
             onEdit={handleModalClose}
-            initialData={tasks.find(task => task.id === editModal.taskId) as Task}
+            initialData={tasks.find(task => task.id === modalData.taskId) as Task}
           />
+        )}
+        {modalData.action === "delete" && modalData.taskId && (
+          <>
+            <p>
+              Are you sure you want to delete the task{" "}
+              <span className="font-bold">{(tasks.find(task => task.id === modalData.taskId) as Task).title}?</span>
+            </p>
+            <button
+              className="bg-red-500 text-white cursor-pointer rounded p-2"
+              onClick={() => handleDeletion(modalData.taskId!)}
+            >
+              Delete
+            </button>
+          </>
         )}
       </Modal>
       {tasks.map(task => (
-        <TaskItem key={task.id} itemData={task} onEdit={handleEdit} />
+        <TaskItem key={task.id} itemData={task} onEdit={handleEdit} onDelete={handleDeleteModal} />
       ))}
     </div>
   )
