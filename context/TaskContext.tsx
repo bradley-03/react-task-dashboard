@@ -1,14 +1,26 @@
 import React, { createContext, useState } from "react"
-import { Task, TaskFormData } from "../types/Task"
+import { EditTaskFormData, Task, TaskFormData } from "../types/Task"
 
 type TaskContextProviderProps = {
   children: React.ReactNode
 }
 
-export const TaskContext = createContext<{ tasks: Task[]; createTask: (taskData: TaskFormData) => void }>({
+// eslint-disable-next-line react-refresh/only-export-components
+export const TaskContext = createContext<{
+  tasks: Task[]
+  createTask: (taskData: TaskFormData) => void
+  editTask: (taskId: string, updatedTaskData: EditTaskFormData) => void
+  deleteTask: (taskId: string) => void
+}>({
   tasks: [],
   createTask: () => {
     throw new Error("createTask must be used within a TaskContextProvider")
+  },
+  editTask: () => {
+    throw new Error("editTask must be used within a TaskContextProvider")
+  },
+  deleteTask: () => {
+    throw new Error("deleteTask must be used within a TaskContextProvider")
   },
 })
 
@@ -21,13 +33,41 @@ export function TaskContextProvider({ children }: TaskContextProviderProps) {
       {
         id: crypto.randomUUID(),
         title: taskData.title,
+        description: taskData.description || undefined,
+        priority: taskData.priority,
+        status: "pending",
+        createdAt: new Date(),
+        due: taskData.due || undefined,
       },
     ])
+  }
+
+  function editTask(taskId: string, updatedTaskData: EditTaskFormData) {
+    setTasks(prevTasks =>
+      prevTasks.map(task =>
+        task.id === taskId
+          ? {
+              ...task,
+              title: updatedTaskData.title,
+              description: updatedTaskData.description || undefined,
+              status: updatedTaskData.status,
+              priority: updatedTaskData.priority,
+              due: updatedTaskData.due || undefined,
+            }
+          : task
+      )
+    )
+  }
+
+  function deleteTask(taskId: string) {
+    setTasks(prevTasks => prevTasks.filter(task => task.id !== taskId))
   }
 
   const contextValue = {
     tasks,
     createTask,
+    editTask,
+    deleteTask,
   }
 
   return <TaskContext.Provider value={contextValue}>{children}</TaskContext.Provider>
