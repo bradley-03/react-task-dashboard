@@ -7,50 +7,48 @@ import { Task } from "../../../types/Task"
 
 type ModalState = {
   open: boolean
-  taskId: string | undefined
+  task?: Task
   action: "edit" | "delete" | undefined
 }
 
 export default function TaskList() {
-  const [modalData, setModalData] = useState<ModalState>({ open: false, taskId: undefined, action: undefined })
+  const [modalData, setModalData] = useState<ModalState>({ open: false, task: undefined, action: undefined })
   const { tasks, deleteTask } = useContext(TaskContext)
 
   function handleEdit(taskId: string) {
-    setModalData({ open: true, taskId, action: "edit" })
+    const foundTask = tasks.find(task => task.id === taskId)
+    setModalData({ open: true, task: foundTask, action: "edit" })
   }
 
   function handleDeleteModal(taskId: string) {
-    setModalData({ open: true, taskId, action: "delete" })
+    const foundTask = tasks.find(task => task.id === taskId)
+    setModalData({ open: true, task: foundTask, action: "delete" })
   }
 
   function handleDeletion(taskId: string) {
     deleteTask(taskId)
-    setModalData({ open: false, taskId: undefined, action: undefined })
+    setModalData({ open: false, task: undefined, action: undefined })
   }
 
   function handleModalClose() {
-    setModalData({ taskId: undefined, open: false, action: undefined })
+    setModalData({ task: undefined, open: false, action: undefined })
   }
 
   return (
     <div>
       <h1>All Tasks ({tasks.length})</h1>
       <Modal isOpen={modalData.open} onClose={handleModalClose} title="Edit Task">
-        {modalData.action === "edit" && modalData.taskId && (
-          <EditTaskForm
-            onEdit={handleModalClose}
-            initialData={tasks.find(task => task.id === modalData.taskId) as Task}
-          />
+        {modalData.action === "edit" && modalData.task && (
+          <EditTaskForm onEdit={handleModalClose} initialData={modalData.task} />
         )}
-        {modalData.action === "delete" && modalData.taskId && (
+        {modalData.action === "delete" && modalData.task && (
           <>
             <p>
-              Are you sure you want to delete the task{" "}
-              <span className="font-bold">{(tasks.find(task => task.id === modalData.taskId) as Task).title}?</span>
+              Are you sure you want to delete the task <span className="font-bold">{modalData.task.title}?</span>
             </p>
             <button
               className="bg-red-500 text-white cursor-pointer rounded p-2"
-              onClick={() => handleDeletion(modalData.taskId!)}
+              onClick={() => modalData.task && handleDeletion(modalData.task.id)}
             >
               Delete
             </button>
