@@ -138,4 +138,44 @@ describe("TaskContext", () => {
       expect(screen.getByTestId("task-div-status")).toHaveTextContent("completed")
     })
   })
+
+  it("ensures state updates are reflected in localStorage", async () => {
+    render(
+      <TaskContextProvider>
+        <TestComponent />
+      </TaskContextProvider>
+    )
+
+    const createBtn = screen.getByTestId("create-btn")
+    fireEvent.click(createBtn)
+
+    await waitFor(() => {
+      expect(screen.getByTestId("tasks-count")).toHaveTextContent("Tasks: 1")
+    })
+
+    let storedTasks = JSON.parse(localStorage.getItem("tasks") as string)
+    expect(storedTasks).toHaveLength(1)
+    expect(storedTasks[0].title).toBe("New Task")
+
+    const editBtn = screen.getByTestId("edit-btn")
+    fireEvent.click(editBtn)
+
+    await waitFor(() => {
+      expect(screen.getByTestId("task-div-title")).toHaveTextContent("Edited Task")
+    })
+
+    storedTasks = JSON.parse(localStorage.getItem("tasks") as string)
+    expect(storedTasks[0].title).toBe("Edited Task")
+    expect(storedTasks[0].priority).toBe("high")
+
+    const deleteBtn = screen.getByTestId("delete-btn")
+    fireEvent.click(deleteBtn)
+
+    await waitFor(() => {
+      expect(screen.getByTestId("tasks-count")).toHaveTextContent("Tasks: 0")
+    })
+
+    storedTasks = JSON.parse(localStorage.getItem("tasks") as string)
+    expect(storedTasks).toHaveLength(0)
+  })
 })
