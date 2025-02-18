@@ -1,5 +1,6 @@
-import React, { createContext, useState } from "react"
+import React, { createContext, useEffect, useState } from "react"
 import { EditTaskFormData, Task, TaskFormData } from "../types/Task"
+import useLocalStorage from "../hooks/useLocalStorage"
 
 type TaskContextProviderProps = {
   children: React.ReactNode
@@ -25,7 +26,13 @@ export const TaskContext = createContext<{
 })
 
 export function TaskContextProvider({ children }: TaskContextProviderProps) {
-  const [tasks, setTasks] = useState<Task[]>([])
+  const { storedValue, setValue } = useLocalStorage("tasks", [])
+  const [tasks, setTasks] = useState<Task[]>(storedValue as Task[])
+
+  // keep localStorage in sync with state
+  useEffect(() => {
+    setValue(tasks)
+  }, [tasks, setValue])
 
   function createTask(taskData: TaskFormData) {
     setTasks(prevTasks => [
