@@ -8,6 +8,7 @@ function TestComponent() {
 
   return (
     <div>
+      <div id="modals"></div>
       <Modal onClose={() => setModalOpen(false)} isOpen={modalOpen} title="Modal">
         <p>Rendered</p>
         <button data-testid="close-btn" onClick={() => setModalOpen(false)}>
