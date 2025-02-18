@@ -1,19 +1,8 @@
 import { renderHook, act } from "@testing-library/react"
-import { vi, beforeEach, afterEach, it, expect, describe } from "vitest"
+import { it, expect, describe } from "vitest"
 import useLocalStorage from "./useLocalStorage"
 
 describe("useLocalStorage", () => {
-  beforeEach(() => {
-    vi.spyOn(global.Storage.prototype, "getItem")
-    vi.spyOn(global.Storage.prototype, "setItem")
-    vi.spyOn(console, "error").mockImplementation(() => {})
-  })
-
-  afterEach(() => {
-    vi.restoreAllMocks()
-    localStorage.clear()
-  })
-
   it("should initialize with value from localStorage", () => {
     localStorage.setItem("testKey", JSON.stringify("storedValue"))
 
