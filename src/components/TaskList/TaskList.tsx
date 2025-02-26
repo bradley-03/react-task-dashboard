@@ -13,15 +13,15 @@ type ModalState = {
 
 export default function TaskList() {
   const [modalData, setModalData] = useState<ModalState>({ open: false, task: undefined, action: undefined })
-  const { tasks, deleteTask } = useContext(TaskContext)
+  const { tasks, deleteTask, findTaskById } = useContext(TaskContext)
 
   function handleEdit(taskId: string) {
-    const foundTask = tasks.find(task => task.id === taskId)
+    const foundTask = findTaskById(taskId)
     setModalData({ open: true, task: foundTask, action: "edit" })
   }
 
   function handleDeleteModal(taskId: string) {
-    const foundTask = tasks.find(task => task.id === taskId)
+    const foundTask = findTaskById(taskId)
     setModalData({ open: true, task: foundTask, action: "delete" })
   }
 
@@ -34,9 +34,11 @@ export default function TaskList() {
     setModalData({ task: undefined, open: false, action: undefined })
   }
 
+  const totalTaskCount = Object.values(tasks).reduce((count, taskList) => count + taskList.length, 0)
+
   return (
     <div>
-      <h1>All Tasks ({tasks.length})</h1>
+      <h1>All Tasks ({totalTaskCount})</h1>
       <Modal isOpen={modalData.open} onClose={handleModalClose} title="Edit Task">
         {modalData.action === "edit" && modalData.task && (
           <EditTaskForm onEdit={handleModalClose} initialData={modalData.task} />
@@ -55,9 +57,11 @@ export default function TaskList() {
           </>
         )}
       </Modal>
-      {tasks.map(task => (
-        <TaskItem key={task.id} itemData={task} onEdit={handleEdit} onDelete={handleDeleteModal} />
-      ))}
+      {Object.keys(tasks).flatMap(status =>
+        tasks[status].map(task => (
+          <TaskItem key={task.id} itemData={task} onEdit={handleEdit} onDelete={handleDeleteModal} />
+        ))
+      )}
     </div>
   )
 }
