@@ -11,7 +11,7 @@ function App() {
     <TaskContextProvider>
       <button onClick={() => setDarkMode(prev => !prev)}>Turn Dark Mode {darkMode ? "Off" : "On"}</button>
       <TaskForm />
-      <TaskList />
+      {/* <TaskList /> */}
       <KanbanBoard />
     </TaskContextProvider>
   )

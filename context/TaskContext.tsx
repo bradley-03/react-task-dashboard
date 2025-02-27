@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useState } from "react"
 import { EditTaskFormData, Task, TaskBoard, TaskFormData } from "../types/Task"
 import useLocalStorage from "../hooks/useLocalStorage"
+import { reorder } from "../util/reorder"
 
 type TaskContextProviderProps = {
   children: React.ReactNode
@@ -13,6 +14,7 @@ export const TaskContext = createContext<{
   editTask: (taskId: string, updatedTaskData: EditTaskFormData) => void
   deleteTask: (taskId: string) => void
   findTaskById: (taskId: string) => Task | undefined
+  reorderTask: (taskId: string, currentIndex: number, toIndex: number) => void
 }>({
   tasks: {},
   createTask: () => {
@@ -26,6 +28,9 @@ export const TaskContext = createContext<{
   },
   findTaskById: () => {
     throw new Error("findTaskById must be used within a TaskContextProvider")
+  },
+  reorderTask: () => {
+    throw new Error("reorderTask must be used within a TaskContextProvider")
   },
 })
 
@@ -100,12 +105,26 @@ export function TaskContextProvider({ children }: TaskContextProviderProps) {
     setTasks(updatedState)
   }
 
+  function reorderTask(taskId: string, currentIndex: number, toIndex: number) {
+    const foundTask = findTaskById(taskId)
+    if (!foundTask) return
+
+    const toReorder = tasks[foundTask.status]
+
+    const reorderedTasks = reorder(toReorder, currentIndex, toIndex) as Task[]
+
+    setTasks(prevItems => ({ ...prevItems, [foundTask.status]: reorderedTasks }))
+  }
+
+  function moveTaskToStatus(taskId: string) {}
+
   const contextValue = {
     tasks,
     createTask,
     editTask,
     deleteTask,
     findTaskById,
+    reorderTask,
   }
 
   return <TaskContext.Provider value={contextValue}>{children}</TaskContext.Provider>
