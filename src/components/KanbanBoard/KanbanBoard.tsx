@@ -10,7 +10,8 @@ export default function KanbanBoard() {
     <div>
       <h1>Kanban Board</h1>
       <DndContext id="kanban">
-        <KanbanContainer id={"pending"} items={tasks.filter(task => task.status === "pending")} />
+        <KanbanContainer id={"pending"} items={tasks.pending} />
+        <KanbanContainer id={"completed"} items={tasks.completed} />
       </DndContext>
     </div>
   )
