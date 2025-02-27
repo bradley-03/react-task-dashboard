@@ -1,4 +1,4 @@
-export type Status = "pending" | "in progress" | "completed" | (string & {})
+export type Status = "Pending" | "In Progress" | "Completed" | (string & {})
 
 export type Task = {
   id: string

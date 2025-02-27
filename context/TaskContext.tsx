@@ -30,7 +30,7 @@ export const TaskContext = createContext<{
 })
 
 export function TaskContextProvider({ children }: TaskContextProviderProps) {
-  const { storedValue, setValue } = useLocalStorage("tasks", {})
+  const { storedValue, setValue } = useLocalStorage("tasks", { Pending: [], "In Progress": [], Completed: [] })
   const [tasks, setTasks] = useState<TaskBoard>(storedValue as TaskBoard)
 
   // keep localStorage in sync with state
@@ -52,12 +52,12 @@ export function TaskContextProvider({ children }: TaskContextProviderProps) {
       title: taskData.title,
       description: taskData.description || undefined,
       priority: taskData.priority,
-      status: "pending",
+      status: "Pending",
       createdAt: new Date(),
       due: taskData.due || undefined,
     }
 
-    setTasks(prevTasks => ({ ...prevTasks, ["pending"]: [...(prevTasks.pending ? prevTasks.pending : []), newTask] }))
+    setTasks(prevTasks => ({ ...prevTasks, ["Pending"]: [...(prevTasks.Pending ? prevTasks.Pending : []), newTask] }))
   }
 
   function editTask(taskId: string, updatedTaskData: EditTaskFormData) {
