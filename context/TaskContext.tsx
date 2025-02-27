@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useState } from "react"
 import { EditTaskFormData, Task, TaskBoard, TaskFormData } from "../types/Task"
 import useLocalStorage from "../hooks/useLocalStorage"
-import { reorder } from "../util/reorder"
+import { moveBetween, reorder } from "../util/reorder"
 
 type TaskContextProviderProps = {
   children: React.ReactNode
@@ -15,6 +15,7 @@ export const TaskContext = createContext<{
   deleteTask: (taskId: string) => void
   findTaskById: (taskId: string) => Task | undefined
   reorderTask: (taskId: string, currentIndex: number, toIndex: number) => void
+  moveTaskToStatus: (fromStatus: string, toStatus: string, fromIndex: number, toIndex: number) => void
 }>({
   tasks: {},
   createTask: () => {
@@ -31,6 +32,9 @@ export const TaskContext = createContext<{
   },
   reorderTask: () => {
     throw new Error("reorderTask must be used within a TaskContextProvider")
+  },
+  moveTaskToStatus: () => {
+    throw new Error("moveTaskToStatus must be used within a TaskContextProvider")
   },
 })
 
@@ -116,7 +120,23 @@ export function TaskContextProvider({ children }: TaskContextProviderProps) {
     setTasks(prevItems => ({ ...prevItems, [foundTask.status]: reorderedTasks }))
   }
 
-  function moveTaskToStatus(taskId: string) {}
+  function moveTaskToStatus(fromStatus: string, toStatus: string, fromIndex: number, toIndex: number) {
+    const fromTasks = tasks[fromStatus] || []
+    const toTasks = tasks[toStatus] || []
+
+    const { updatedFrom, updatedTo } = moveBetween(fromTasks, toTasks, fromIndex, toIndex) as {
+      updatedFrom: Task[]
+      updatedTo: Task[]
+    }
+
+    updatedTo[toIndex].status = toStatus
+
+    setTasks(prevItems => ({
+      ...prevItems,
+      [fromStatus]: updatedFrom,
+      [toStatus]: updatedTo,
+    }))
+  }
 
   const contextValue = {
     tasks,
@@ -125,6 +145,7 @@ export function TaskContextProvider({ children }: TaskContextProviderProps) {
     deleteTask,
     findTaskById,
     reorderTask,
+    moveTaskToStatus,
   }
 
   return <TaskContext.Provider value={contextValue}>{children}</TaskContext.Provider>
