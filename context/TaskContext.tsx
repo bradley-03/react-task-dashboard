@@ -70,7 +70,7 @@ export function TaskContextProvider({ children }: TaskContextProviderProps) {
   }
 
   function editTask(taskId: string, updatedTaskData: EditTaskFormData) {
-    const updatedState: TaskBoard = {}
+    const updatedState: TaskBoard = { ...tasks }
 
     const foundTask = findTaskById(taskId)
     if (!foundTask) return
@@ -89,12 +89,16 @@ export function TaskContextProvider({ children }: TaskContextProviderProps) {
       for (const status in tasks) {
         updatedState[status] = tasks[status].filter(task => task.id !== taskId)
       }
-    }
 
-    updatedState[editedTask.status] = [
-      ...(updatedState[editedTask.status] ? updatedState[editedTask.status] : []),
-      editedTask,
-    ]
+      updatedState[editedTask.status] = [
+        ...(updatedState[editedTask.status] ? updatedState[editedTask.status] : []),
+        editedTask,
+      ]
+    } else {
+      updatedState[editedTask.status] = updatedState[editedTask.status].map(task =>
+        task.id === taskId ? editedTask : task
+      )
+    }
 
     setTasks(updatedState)
   }

@@ -72,7 +72,7 @@ export default function KanbanBoard() {
         ))}
         <DragOverlay>
           {activeTask ? (
-            <div className="touch-none">
+            <div className="touch-none select-none cursor-grab">
               <h1>{activeTask.title}</h1>
             </div>
           ) : undefined}

@@ -9,7 +9,7 @@ type KanbanItemProps = {
 export default function KanbanItem({ id, item }: KanbanItemProps) {
   return (
     <SortableItem id={id}>
-      <div>
+      <div className="select-none cursor-grab">
         <h1>{item.title}</h1>
       </div>
     </SortableItem>
