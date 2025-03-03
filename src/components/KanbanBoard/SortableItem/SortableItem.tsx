@@ -17,7 +17,7 @@ export default function SortableItem({ id, children }: SortableItemProps) {
 
   return (
     <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <h1>{children}</h1>
+      {children}
     </div>
   )
 }

@@ -27,19 +27,34 @@ export default function KanbanBoard() {
     }
   }
 
-  function handleDragOver(event: DragOverEvent) {
-    if (!event.active.data.current) return
-    if (!event.over?.data.current) return
-
-    const activeContainer = event.active.data.current.sortable.containerId
-    const overContainer = event.over.data.current.sortable.containerId
-
-    const currentIndex = event.active.data.current.sortable.index
-    const toIndex = event.over.data.current.sortable.index
-
-    if (activeContainer !== overContainer) {
-      moveTaskToStatus(activeContainer, overContainer, currentIndex, toIndex)
+  function findContainer(id: string) {
+    if (id in tasks) {
+      return id
     }
+
+    const container = Object.keys(tasks).find(key => tasks[key].find(item => item.id === id))
+
+    return container
+  }
+
+  function handleDragOver({ active, over }: DragOverEvent) {
+    const activeContainer = findContainer(active.id as string)
+    const overContainer = findContainer(over?.id as string)
+
+    if (!activeContainer || !overContainer || activeContainer === overContainer) return
+
+    const activeItems = tasks[activeContainer]
+    const overItems = tasks[overContainer]
+
+    const activeIndex = activeItems.findIndex(item => item.id === active.id)
+    let overIndex = overItems.findIndex(item => item.id !== over?.id)
+
+    // hacky fix for status error if task is dragged in empty container
+    if (overIndex === -1) {
+      overIndex = 0
+    }
+
+    moveTaskToStatus(activeContainer, overContainer, activeIndex, overIndex)
   }
 
   function handleDragStart(event: DragStartEvent) {
