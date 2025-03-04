@@ -65,14 +65,17 @@ export default function KanbanBoard() {
   }
 
   return (
-    <div>
+    <div className="flex flex-col justify-center items-center">
       <h1>Kanban Board</h1>
-      <DndContext id="kanban" onDragEnd={handleDragEnd} onDragStart={handleDragStart} onDragOver={handleDragOver}>
-        {Object.keys(tasks).map(key => (
-          <KanbanContainer key={key} id={key} items={tasks[key] || []} />
-        ))}
-        <DragOverlay>{activeTask ? <KanbanItem item={activeTask} /> : undefined}</DragOverlay>
-      </DndContext>
+
+      <div className="flex gap-4">
+        <DndContext id="kanban" onDragEnd={handleDragEnd} onDragStart={handleDragStart} onDragOver={handleDragOver}>
+          {Object.keys(tasks).map(key => (
+            <KanbanContainer key={key} id={key} items={tasks[key] || []} />
+          ))}
+          <DragOverlay>{activeTask ? <KanbanItem item={activeTask} /> : undefined}</DragOverlay>
+        </DndContext>
+      </div>
     </div>
   )
 }

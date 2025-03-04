@@ -13,17 +13,11 @@ export default function KanbanContainer({ id, items }: KanbanContainerProps) {
   const { setNodeRef } = useDroppable({
     id: id,
   })
-  const droppableStyle = {
-    padding: "20px 10px",
-    border: "1px solid black",
-    borderRadius: "5px",
-    minWidth: 110,
-  }
 
   return (
-    <div>
+    <div className="w-64">
       <h1>{id}</h1>
-      <div ref={setNodeRef} style={droppableStyle}>
+      <div ref={setNodeRef} className="flex flex-col gap-2 px-3.5 py-2.5 rounded shadow bg-gray-50">
         <SortableContext id={id} items={items} strategy={verticalListSortingStrategy}>
           {items.map(item => (
             <SortableItem key={item.id} id={item.id}>
