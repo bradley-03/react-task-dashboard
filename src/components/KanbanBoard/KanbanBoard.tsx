@@ -3,6 +3,7 @@ import KanbanContainer from "./KanbanContainer/KanbanContainer"
 import { TaskContext } from "../../../context/TaskContext"
 import { useContext, useState } from "react"
 import { Task } from "../../../types/Task"
+import KanbanItem from "./KanbanItem/KanbanItem"
 
 export default function KanbanBoard() {
   const { tasks, reorderTask, moveTaskToStatus, findTaskById } = useContext(TaskContext)
@@ -70,13 +71,7 @@ export default function KanbanBoard() {
         {Object.keys(tasks).map(key => (
           <KanbanContainer key={key} id={key} items={tasks[key] || []} />
         ))}
-        <DragOverlay>
-          {activeTask ? (
-            <div className="touch-none select-none cursor-grab">
-              <h1>{activeTask.title}</h1>
-            </div>
-          ) : undefined}
-        </DragOverlay>
+        <DragOverlay>{activeTask ? <KanbanItem item={activeTask} /> : undefined}</DragOverlay>
       </DndContext>
     </div>
   )

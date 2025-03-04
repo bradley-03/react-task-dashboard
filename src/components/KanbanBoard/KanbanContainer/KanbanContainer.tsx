@@ -2,6 +2,7 @@ import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable"
 import { Task } from "../../../../types/Task"
 import KanbanItem from "../KanbanItem/KanbanItem"
 import { useDroppable } from "@dnd-kit/core"
+import SortableItem from "../SortableItem/SortableItem"
 
 type KanbanContainerProps = {
   id: string
@@ -25,7 +26,9 @@ export default function KanbanContainer({ id, items }: KanbanContainerProps) {
       <div ref={setNodeRef} style={droppableStyle}>
         <SortableContext id={id} items={items} strategy={verticalListSortingStrategy}>
           {items.map(item => (
-            <KanbanItem key={item.id} id={item.id} item={item} />
+            <SortableItem key={item.id} id={item.id}>
+              <KanbanItem item={item} />
+            </SortableItem>
           ))}
         </SortableContext>
       </div>
