@@ -73,7 +73,9 @@ export default function KanbanBoard() {
           {Object.keys(tasks).map(key => (
             <KanbanContainer key={key} id={key} items={tasks[key] || []} />
           ))}
-          <DragOverlay>{activeTask ? <KanbanItem item={activeTask} /> : undefined}</DragOverlay>
+          <DragOverlay dropAnimation={{ duration: 150 }} className="rotate-4">
+            {activeTask ? <KanbanItem item={activeTask} /> : undefined}
+          </DragOverlay>
         </DndContext>
       </div>
     </div>
