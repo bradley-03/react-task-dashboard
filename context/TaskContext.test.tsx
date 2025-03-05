@@ -26,7 +26,7 @@ function TestComponent() {
       </button>
       <button
         data-testid="delete-btn"
-        onClick={() => (tasks.pending[0] ? deleteTask(tasks.pending[0].id) : deleteTask(tasks.completed[0].id))}
+        onClick={() => (tasks.Pending[0] ? deleteTask(tasks.Pending[0].id) : deleteTask(tasks.Completed[0].id))}
       >
         Delete Task
       </button>
@@ -34,9 +34,9 @@ function TestComponent() {
       <button
         data-testid="edit-btn"
         onClick={() =>
-          tasks.pending[0] &&
-          editTask(tasks.pending[0].id, {
-            status: "completed",
+          tasks.Pending[0] &&
+          editTask(tasks.Pending[0].id, {
+            status: "Completed",
             title: "Edited Task",
             priority: "high",
             due: new Date("2025-02-17"),
@@ -47,22 +47,22 @@ function TestComponent() {
         Edit Task
       </button>
 
-      {tasks.pending && tasks.pending[0] && (
+      {tasks.Pending && tasks.Pending[0] && (
         <div data-testid="task-div">
-          <p data-testid="task-div-title">{tasks.pending[0].title}</p>
-          <p data-testid="task-div-description">{tasks.pending[0].description}</p>
-          <p data-testid="task-div-priority">{tasks.pending[0].priority}</p>
-          <p data-testid="task-div-due">{tasks.pending[0].due && tasks.pending[0].due.toDateString()}</p>
-          <p data-testid="task-div-status">{tasks.pending[0].status}</p>
+          <p data-testid="task-div-title">{tasks.Pending[0].title}</p>
+          <p data-testid="task-div-description">{tasks.Pending[0].description}</p>
+          <p data-testid="task-div-priority">{tasks.Pending[0].priority}</p>
+          <p data-testid="task-div-due">{tasks.Pending[0].due && tasks.Pending[0].due.toDateString()}</p>
+          <p data-testid="task-div-status">{tasks.Pending[0].status}</p>
         </div>
       )}
-      {tasks.completed && tasks.completed[0] && (
+      {tasks.Completed && tasks.Completed[0] && (
         <div data-testid="task-div-2">
-          <p data-testid="task-div-2-title">{tasks.completed[0].title}</p>
-          <p data-testid="task-div-2-description">{tasks.completed[0].description}</p>
-          <p data-testid="task-div-2-priority">{tasks.completed[0].priority}</p>
-          <p data-testid="task-div-2-due">{tasks.completed[0].due && tasks.completed[0].due.toDateString()}</p>
-          <p data-testid="task-div-2-status">{tasks.completed[0].status}</p>
+          <p data-testid="task-div-2-title">{tasks.Completed[0].title}</p>
+          <p data-testid="task-div-2-description">{tasks.Completed[0].description}</p>
+          <p data-testid="task-div-2-priority">{tasks.Completed[0].priority}</p>
+          <p data-testid="task-div-2-due">{tasks.Completed[0].due && tasks.Completed[0].due.toDateString()}</p>
+          <p data-testid="task-div-2-status">{tasks.Completed[0].status}</p>
         </div>
       )}
     </>
@@ -149,7 +149,7 @@ describe("TaskContext", () => {
       expect(screen.getByTestId("task-div-2-description")).toHaveTextContent("Edited Description")
       expect(screen.getByTestId("task-div-2-priority")).toHaveTextContent("high")
       expect(screen.getByTestId("task-div-2-due")).toHaveTextContent("Mon Feb 17 2025")
-      expect(screen.getByTestId("task-div-2-status")).toHaveTextContent("completed")
+      expect(screen.getByTestId("task-div-2-status")).toHaveTextContent("Completed")
       expect(screen.queryByTestId("tasks-div")).not.toBeInTheDocument()
     })
   })
@@ -169,8 +169,8 @@ describe("TaskContext", () => {
     })
 
     let storedTasks = JSON.parse(localStorage.getItem("tasks") as string)
-    expect(storedTasks.pending).toHaveLength(1)
-    expect(storedTasks.pending[0].title).toBe("New Task")
+    expect(storedTasks.Pending).toHaveLength(1)
+    expect(storedTasks.Pending[0].title).toBe("New Task")
 
     const editBtn = screen.getByTestId("edit-btn")
     fireEvent.click(editBtn)
@@ -180,8 +180,8 @@ describe("TaskContext", () => {
     })
 
     storedTasks = JSON.parse(localStorage.getItem("tasks") as string)
-    expect(storedTasks.completed[0].title).toBe("Edited Task")
-    expect(storedTasks.completed[0].priority).toBe("high")
+    expect(storedTasks.Completed[0].title).toBe("Edited Task")
+    expect(storedTasks.Completed[0].priority).toBe("high")
 
     const deleteBtn = screen.getByTestId("delete-btn")
     fireEvent.click(deleteBtn)
@@ -191,6 +191,6 @@ describe("TaskContext", () => {
     })
 
     storedTasks = JSON.parse(localStorage.getItem("tasks") as string)
-    expect(storedTasks.completed).toHaveLength(0)
+    expect(storedTasks.Completed).toHaveLength(0)
   })
 })
