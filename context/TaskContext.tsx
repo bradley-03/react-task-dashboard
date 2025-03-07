@@ -2,10 +2,13 @@ import React, { createContext, useEffect, useState } from "react"
 import { EditTaskFormData, Task, TaskBoard, TaskFormData } from "../types/Task"
 import useLocalStorage from "../hooks/useLocalStorage"
 import { moveBetween, reorder } from "../util/reorder"
+import { priorityMethod } from "../util/sorting"
 
 type TaskContextProviderProps = {
   children: React.ReactNode
 }
+
+type SortMethod = "priority" | "due"
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const TaskContext = createContext<{
@@ -16,6 +19,7 @@ export const TaskContext = createContext<{
   findTaskById: (taskId: string) => Task | undefined
   reorderTask: (taskId: string, currentIndex: number, toIndex: number) => void
   moveTaskToStatus: (fromStatus: string, toStatus: string, fromIndex: number, toIndex: number) => void
+  sortTasks: (sortMethod: SortMethod) => void
 }>({
   tasks: {},
   createTask: () => {
@@ -35,6 +39,9 @@ export const TaskContext = createContext<{
   },
   moveTaskToStatus: () => {
     throw new Error("moveTaskToStatus must be used within a TaskContextProvider")
+  },
+  sortTasks: () => {
+    throw new Error("sortTasks must be used within a TaskContextProvider")
   },
 })
 
@@ -142,6 +149,18 @@ export function TaskContextProvider({ children }: TaskContextProviderProps) {
     }))
   }
 
+  function sortTasks(sortMethod: SortMethod) {
+    const updatedState: TaskBoard = {}
+
+    if (sortMethod === "priority") {
+      for (const status in tasks) {
+        updatedState[status] = tasks[status].sort(priorityMethod)
+      }
+    }
+
+    setTasks(updatedState)
+  }
+
   const contextValue = {
     tasks,
     createTask,
@@ -150,6 +169,7 @@ export function TaskContextProvider({ children }: TaskContextProviderProps) {
     findTaskById,
     reorderTask,
     moveTaskToStatus,
+    sortTasks,
   }
 
   return <TaskContext.Provider value={contextValue}>{children}</TaskContext.Provider>

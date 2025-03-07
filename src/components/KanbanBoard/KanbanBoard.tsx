@@ -6,7 +6,7 @@ import { Task } from "../../../types/Task"
 import KanbanItem from "./KanbanItem/KanbanItem"
 
 export default function KanbanBoard() {
-  const { tasks, reorderTask, moveTaskToStatus, findTaskById } = useContext(TaskContext)
+  const { tasks, reorderTask, moveTaskToStatus, findTaskById, sortTasks } = useContext(TaskContext)
   const [activeTask, setActiveTask] = useState<Task>()
 
   function handleDragEnd(event: DragEndEvent) {
@@ -67,6 +67,13 @@ export default function KanbanBoard() {
   return (
     <div className="flex flex-col justify-center items-center">
       <h1>Kanban Board</h1>
+
+      <button
+        onClick={() => sortTasks("priority")}
+        className="bg-blue-500 p-2 rounded text-white hover:bg-blue-600 transition cursor-pointer"
+      >
+        Sort by Priority
+      </button>
 
       <div className="flex gap-4">
         <DndContext id="kanban" onDragEnd={handleDragEnd} onDragStart={handleDragStart} onDragOver={handleDragOver}>

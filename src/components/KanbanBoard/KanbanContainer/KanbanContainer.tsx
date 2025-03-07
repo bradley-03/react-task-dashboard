@@ -18,7 +18,12 @@ export default function KanbanContainer({ id, items }: KanbanContainerProps) {
     <div className="w-64">
       <h1>{id}</h1>
       <div ref={setNodeRef} className="flex flex-col gap-2 px-3.5 py-2.5 rounded shadow bg-gray-50">
-        <SortableContext id={id} items={items} strategy={verticalListSortingStrategy}>
+        <SortableContext
+          key={items.map(i => i.id).join(",")}
+          id={id}
+          items={items}
+          strategy={verticalListSortingStrategy}
+        >
           {items.map(item => (
             <SortableItem key={item.id} id={item.id}>
               <KanbanItem item={item} />
