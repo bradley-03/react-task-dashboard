@@ -17,6 +17,7 @@ export function priorityMethod(a: Task, b: Task) {
 }
 
 export function dueMethod(a: Task, b: Task) {
+  if (!a.due && !b.due) return 0
   if (!a.due) return 1
   if (!b.due) return -1
 
