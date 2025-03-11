@@ -2,7 +2,7 @@ import React, { createContext, useEffect, useState } from "react"
 import { EditTaskFormData, Task, TaskBoard, TaskFormData } from "../types/Task"
 import useLocalStorage from "../hooks/useLocalStorage"
 import { moveBetween, reorder } from "../util/reorder"
-import { priorityMethod } from "../util/sorting"
+import { dueMethod, priorityMethod } from "../util/sorting"
 
 type TaskContextProviderProps = {
   children: React.ReactNode
@@ -155,6 +155,10 @@ export function TaskContextProvider({ children }: TaskContextProviderProps) {
     if (sortMethod === "priority") {
       for (const status in tasks) {
         updatedState[status] = tasks[status].sort(priorityMethod)
+      }
+    } else if (sortMethod === "due") {
+      for (const status in tasks) {
+        updatedState[status] = tasks[status].sort(dueMethod)
       }
     }
 

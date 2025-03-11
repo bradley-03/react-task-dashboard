@@ -74,6 +74,12 @@ export default function KanbanBoard() {
       >
         Sort by Priority
       </button>
+      <button
+        onClick={() => sortTasks("due")}
+        className="bg-blue-500 p-2 rounded text-white hover:bg-blue-600 transition cursor-pointer"
+      >
+        Sort by Date
+      </button>
 
       <div className="flex gap-4">
         <DndContext id="kanban" onDragEnd={handleDragEnd} onDragStart={handleDragStart} onDragOver={handleDragOver}>
