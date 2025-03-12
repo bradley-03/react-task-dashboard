@@ -1,6 +1,6 @@
 import { useContext, useState } from "react"
 import { TaskContext } from "../../../context/TaskContext"
-import TaskItem from "./TaskItem"
+import TaskListItem from "./TaskListItem"
 import Modal from "../Modal/Modal"
 import EditTaskForm from "../EditTaskForm/EditTaskForm"
 import { Task } from "../../../types/Task"
@@ -37,7 +37,7 @@ export default function TaskList() {
   const totalTaskCount = Object.values(tasks).reduce((count, taskList) => count + taskList.length, 0)
 
   return (
-    <div>
+    <div className="flex flex-col justify-center items-center">
       <h1>All Tasks ({totalTaskCount})</h1>
       <Modal isOpen={modalData.open} onClose={handleModalClose} title="Edit Task">
         {modalData.action === "edit" && modalData.task && (
@@ -57,11 +57,32 @@ export default function TaskList() {
           </>
         )}
       </Modal>
-      {Object.keys(tasks).flatMap(status =>
-        tasks[status].map(task => (
-          <TaskItem key={task.id} itemData={task} onEdit={handleEdit} onDelete={handleDeleteModal} />
-        ))
-      )}
+      <table>
+        <thead>
+          <tr className="bg-gray-200 border-1 border-collapse">
+            <th className="border-1 border-collapse">Title</th>
+            <th className="border-1 border-collapse">Description</th>
+            <th className="border-1 border-collapse">Priority</th>
+            <th className="border-1 border-collapse">Due</th>
+          </tr>
+        </thead>
+        <tbody>
+          {Object.keys(tasks).flatMap(status =>
+            tasks[status].map(task => (
+              <TaskListItem key={task.id} itemData={task} onEdit={handleEdit} onDelete={handleDeleteModal} />
+            ))
+          )}
+        </tbody>
+      </table>
+      {/* <ul>
+        {Object.keys(tasks).flatMap(status =>
+          tasks[status].map(task => (
+            <li key={task.id}>
+              <TaskListItem itemData={task} onEdit={handleEdit} onDelete={handleDeleteModal} />
+            </li>
+          ))
+        )}
+      </ul> */}
     </div>
   )
 }
