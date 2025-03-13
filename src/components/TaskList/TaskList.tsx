@@ -33,6 +33,7 @@ export default function TaskList() {
   const [modalData, setModalData] = useState<ModalState>({ open: false, task: undefined, action: undefined })
   const { tasks, deleteTask, findTaskById } = useContext(TaskContext)
   const [sortBy, setSortBy] = useState<SortState>({ by: "unsorted", direction: "down" })
+  const [showCompleted, setShowCompleted] = useState<boolean>(false)
 
   function handleEdit(taskId: string) {
     const foundTask = findTaskById(taskId)
@@ -61,10 +62,18 @@ export default function TaskList() {
     setSortBy(old => ({ ...old, by: event.target.value }))
   }
 
-  const sortedTasks = getSortedTasks(
+  function handleShowCompletedCheck() {
+    setShowCompleted(old => !old)
+  }
+
+  let sortedTasks = getSortedTasks(
     Object.keys(tasks).flatMap(status => tasks[status]),
     sortBy
   )
+
+  if (showCompleted === false) {
+    sortedTasks = sortedTasks.filter(task => task.status !== "Completed")
+  }
 
   const totalTaskCount = Object.values(tasks).reduce((count, taskList) => count + taskList.length, 0)
 
@@ -91,6 +100,14 @@ export default function TaskList() {
       </Modal>
 
       <div>
+        <label htmlFor="show-completed">Show Completed</label>
+        <input
+          type="checkbox"
+          name="show-completed"
+          id="show-completed"
+          checked={showCompleted}
+          onChange={handleShowCompletedCheck}
+        />
         <label htmlFor="sort-direction">Sort by</label>
         <select name="sort-direction" id="sort-direction" value={sortBy.by} onChange={handleSortByChange}>
           <option value="unsorted">Unsorted</option>
@@ -118,15 +135,6 @@ export default function TaskList() {
             ))}
         </tbody>
       </table>
-      {/* <ul>
-        {Object.keys(tasks).flatMap(status =>
-          tasks[status].map(task => (
-            <li key={task.id}>
-              <TaskListItem itemData={task} onEdit={handleEdit} onDelete={handleDeleteModal} />
-            </li>
-          ))
-        )}
-      </ul> */}
     </div>
   )
 }
