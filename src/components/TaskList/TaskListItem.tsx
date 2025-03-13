@@ -24,6 +24,7 @@ export default function TaskItem({ itemData, onEdit, onDelete }: TaskItemProps) 
       <td className={`border-black-1 bborder-collapse ${!itemData.due && "text-gray-400"}`}>
         {itemData.due?.toLocaleString() || "N/A"}
       </td>
+      <td className="border-1 border-collapse">{itemData.status}</td>
     </tr>
   )
 }
