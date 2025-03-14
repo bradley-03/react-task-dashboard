@@ -2,7 +2,8 @@ import { BaseSyntheticEvent, useContext, useState } from "react"
 import { TaskContext } from "../../../context/TaskContext"
 import TaskListItem from "./TaskListItem"
 import Modal from "../Modal/Modal"
-import EditTaskForm from "../EditTaskForm/EditTaskForm"
+import EditTaskModal from "../Modals/EditTaskModal/EditTaskModal"
+import DeleteTaskModal from "../Modals/DeleteTaskModal/DeleteTaskModal"
 import { Task } from "../../../types/Task"
 import { dueMethod, dueMethodAscending, nameMethod, priorityMethod } from "../../../util/sorting"
 
@@ -80,24 +81,18 @@ export default function TaskList() {
   return (
     <div className="flex flex-col justify-center items-center">
       <h1>All Tasks ({totalTaskCount})</h1>
-      <Modal isOpen={modalData.open} onClose={handleModalClose} title="Edit Task">
-        {modalData.action === "edit" && modalData.task && (
-          <EditTaskForm onEdit={handleModalClose} initialData={modalData.task} />
-        )}
-        {modalData.action === "delete" && modalData.task && (
-          <>
-            <p>
-              Are you sure you want to delete the task <span className="font-bold">{modalData.task.title}?</span>
-            </p>
-            <button
-              className="bg-red-500 text-white cursor-pointer rounded p-2"
-              onClick={() => modalData.task && handleDeletion(modalData.task.id)}
-            >
-              Delete
-            </button>
-          </>
-        )}
-      </Modal>
+
+      {modalData.action && modalData.task && modalData.action === "edit" && (
+        <EditTaskModal isOpen={modalData.open} onClose={handleModalClose} task={modalData.task} />
+      )}
+      {modalData.action && modalData.task && modalData.action === "delete" && (
+        <DeleteTaskModal
+          isOpen={modalData.open}
+          onClose={handleModalClose}
+          task={modalData.task}
+          onDelete={handleDeletion}
+        />
+      )}
 
       <div>
         <label htmlFor="show-completed">Show Completed</label>
