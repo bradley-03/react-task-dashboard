@@ -2,7 +2,7 @@ import { ButtonHTMLAttributes } from "react"
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children?: React.ReactNode
-  variant?: "primary" | "secondary" | "outline" | "danger" | "link"
+  variant?: "primary" | "secondary" | "outline" | "danger" | "link" | "ghost"
   size?: "regular" | "medium" | "large" | "icon"
 }
 
@@ -19,6 +19,8 @@ const variantStyles = {
   danger:
     "dark:bg-red-800 dark:hover:enabled:bg-red-700 bg-red-700 hover:enabled:bg-red-600 text-white dark:disabled:bg-red-400 dark:disabled:text-neutral-200 disabled:bg-red-400 disabled:text-neutral-200",
   link: "bg-none border-none dark:text-white hover:enabled:underline shadow-none text-black dark:disabled:text-neutral-500 disabled:text-neutral-600",
+  ghost:
+    "shadow-none bg-none dark:enabled:hover:bg-neutral-800 dark:text-white text-black enabled:hover:bg-neutral-300 disabled:text-neutral-600 dark:disabled:text-neutral-500",
 }
 
 const sizeStyles = {
