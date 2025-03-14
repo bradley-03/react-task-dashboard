@@ -126,6 +126,7 @@ export default function TaskList() {
             <th className="border-1 border-collapse">Priority</th>
             <th className="border-1 border-collapse">Due</th>
             <th className="border-1 border-collapse">Status</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>

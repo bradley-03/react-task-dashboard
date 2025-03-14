@@ -1,4 +1,6 @@
 import { Task } from "../../../types/Task"
+import { FaRegEdit } from "react-icons/fa"
+import { MdOutlineDelete } from "react-icons/md"
 
 type TaskItemProps = {
   itemData: Task
@@ -25,6 +27,14 @@ export default function TaskItem({ itemData, onEdit, onDelete }: TaskItemProps) 
         {itemData.due?.toLocaleString() || "N/A"}
       </td>
       <td className="border-1 border-collapse">{itemData.status}</td>
+      <td>
+        <button className="cursor-pointer text-2xl" onClick={() => onEdit(itemData.id)}>
+          <FaRegEdit />
+        </button>
+        <button className="cursor-pointer text-2xl" onClick={() => onDelete(itemData.id)}>
+          <MdOutlineDelete />
+        </button>
+      </td>
     </tr>
   )
 }
