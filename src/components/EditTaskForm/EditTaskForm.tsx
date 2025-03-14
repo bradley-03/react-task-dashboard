@@ -73,9 +73,9 @@ export default function EditTaskForm({ initialData, onEdit }: EditTaskFormProps)
         <label htmlFor="status">Status</label>
         <br />
         <select defaultValue={initialData.status} className="border-1 rounded" name="status" id="status" required>
-          <option value="pending">Pending</option>
-          <option value="in progress">In Progress</option>
-          <option value="completed">Completed</option>
+          <option value="Pending">Pending</option>
+          <option value="In Progress">In Progress</option>
+          <option value="Completed">Completed</option>
         </select>
         <br />
         <button className="bg-blue-500 p-2 rounded text-white hover:bg-blue-600 transition cursor-pointer">

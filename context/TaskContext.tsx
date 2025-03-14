@@ -1,10 +1,14 @@
 import React, { createContext, useEffect, useState } from "react"
 import { EditTaskFormData, Task, TaskBoard, TaskFormData } from "../types/Task"
 import useLocalStorage from "../hooks/useLocalStorage"
+import { moveBetween, reorder } from "../util/reorder"
+import { dueMethod, priorityMethod } from "../util/sorting"
 
 type TaskContextProviderProps = {
   children: React.ReactNode
 }
+
+type SortMethod = "priority" | "due"
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const TaskContext = createContext<{
@@ -13,6 +17,9 @@ export const TaskContext = createContext<{
   editTask: (taskId: string, updatedTaskData: EditTaskFormData) => void
   deleteTask: (taskId: string) => void
   findTaskById: (taskId: string) => Task | undefined
+  reorderTask: (taskId: string, currentIndex: number, toIndex: number) => void
+  moveTaskToStatus: (fromStatus: string, toStatus: string, fromIndex: number, toIndex: number) => void
+  sortTasks: (sortMethod: SortMethod) => void
 }>({
   tasks: {},
   createTask: () => {
@@ -27,10 +34,19 @@ export const TaskContext = createContext<{
   findTaskById: () => {
     throw new Error("findTaskById must be used within a TaskContextProvider")
   },
+  reorderTask: () => {
+    throw new Error("reorderTask must be used within a TaskContextProvider")
+  },
+  moveTaskToStatus: () => {
+    throw new Error("moveTaskToStatus must be used within a TaskContextProvider")
+  },
+  sortTasks: () => {
+    throw new Error("sortTasks must be used within a TaskContextProvider")
+  },
 })
 
 export function TaskContextProvider({ children }: TaskContextProviderProps) {
-  const { storedValue, setValue } = useLocalStorage("tasks", {})
+  const { storedValue, setValue } = useLocalStorage("tasks", { Pending: [], "In Progress": [], Completed: [] })
   const [tasks, setTasks] = useState<TaskBoard>(storedValue as TaskBoard)
 
   // keep localStorage in sync with state
@@ -52,16 +68,16 @@ export function TaskContextProvider({ children }: TaskContextProviderProps) {
       title: taskData.title,
       description: taskData.description || undefined,
       priority: taskData.priority,
-      status: "pending",
+      status: "Pending",
       createdAt: new Date(),
       due: taskData.due || undefined,
     }
 
-    setTasks(prevTasks => ({ ...prevTasks, ["pending"]: [...(prevTasks.pending ? prevTasks.pending : []), newTask] }))
+    setTasks(prevTasks => ({ ...prevTasks, ["Pending"]: [...(prevTasks.Pending ? prevTasks.Pending : []), newTask] }))
   }
 
   function editTask(taskId: string, updatedTaskData: EditTaskFormData) {
-    const updatedState: TaskBoard = {}
+    const updatedState: TaskBoard = { ...tasks }
 
     const foundTask = findTaskById(taskId)
     if (!foundTask) return
@@ -80,12 +96,16 @@ export function TaskContextProvider({ children }: TaskContextProviderProps) {
       for (const status in tasks) {
         updatedState[status] = tasks[status].filter(task => task.id !== taskId)
       }
-    }
 
-    updatedState[editedTask.status] = [
-      ...(updatedState[editedTask.status] ? updatedState[editedTask.status] : []),
-      editedTask,
-    ]
+      updatedState[editedTask.status] = [
+        ...(updatedState[editedTask.status] ? updatedState[editedTask.status] : []),
+        editedTask,
+      ]
+    } else {
+      updatedState[editedTask.status] = updatedState[editedTask.status].map(task =>
+        task.id === taskId ? editedTask : task
+      )
+    }
 
     setTasks(updatedState)
   }
@@ -100,12 +120,60 @@ export function TaskContextProvider({ children }: TaskContextProviderProps) {
     setTasks(updatedState)
   }
 
+  function reorderTask(taskId: string, currentIndex: number, toIndex: number) {
+    const foundTask = findTaskById(taskId)
+    if (!foundTask) return
+
+    const toReorder = tasks[foundTask.status]
+
+    const reorderedTasks = reorder(toReorder, currentIndex, toIndex) as Task[]
+
+    setTasks(prevItems => ({ ...prevItems, [foundTask.status]: reorderedTasks }))
+  }
+
+  function moveTaskToStatus(fromStatus: string, toStatus: string, fromIndex: number, toIndex: number) {
+    const fromTasks = tasks[fromStatus] || []
+    const toTasks = tasks[toStatus] || []
+
+    const { updatedFrom, updatedTo } = moveBetween(fromTasks, toTasks, fromIndex, toIndex) as {
+      updatedFrom: Task[]
+      updatedTo: Task[]
+    }
+
+    updatedTo[toIndex].status = toStatus
+
+    setTasks(prevItems => ({
+      ...prevItems,
+      [fromStatus]: updatedFrom,
+      [toStatus]: updatedTo,
+    }))
+  }
+
+  function sortTasks(sortMethod: SortMethod) {
+    const updatedState: TaskBoard = {}
+
+    if (sortMethod === "priority") {
+      for (const status in tasks) {
+        updatedState[status] = tasks[status].sort(priorityMethod)
+      }
+    } else if (sortMethod === "due") {
+      for (const status in tasks) {
+        updatedState[status] = tasks[status].sort(dueMethod)
+      }
+    }
+
+    setTasks(updatedState)
+  }
+
   const contextValue = {
     tasks,
     createTask,
     editTask,
     deleteTask,
     findTaskById,
+    reorderTask,
+    moveTaskToStatus,
+    sortTasks,
   }
 
   return <TaskContext.Provider value={contextValue}>{children}</TaskContext.Provider>
