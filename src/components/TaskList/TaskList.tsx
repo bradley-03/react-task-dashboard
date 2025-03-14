@@ -1,7 +1,7 @@
 import { BaseSyntheticEvent, useContext, useState } from "react"
 import { TaskContext } from "../../../context/TaskContext"
 import TaskListItem from "./TaskListItem"
-import Modal from "../Modal/Modal"
+import Button from "../Button/Button"
 import EditTaskModal from "../Modals/EditTaskModal/EditTaskModal"
 import DeleteTaskModal from "../Modals/DeleteTaskModal/DeleteTaskModal"
 import { Task } from "../../../types/Task"
@@ -110,7 +110,9 @@ export default function TaskList() {
           <option value="priority">Priority</option>
           <option value="due">Due</option>
         </select>
-        <button onClick={handleSortDirectionChange}>{sortBy.direction}</button>
+        <Button variant="link" onClick={handleSortDirectionChange}>
+          {sortBy.direction}
+        </Button>
       </div>
 
       <table>

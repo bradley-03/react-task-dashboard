@@ -1,5 +1,6 @@
 import Modal from "../../Modal/Modal"
 import { Task } from "../../../../types/Task"
+import Button from "../../Button/Button"
 
 type DeleteTaskModalProps = {
   isOpen: boolean
@@ -14,9 +15,9 @@ export default function DeleteTaskModal({ isOpen, onClose, onDelete, task }: Del
       <p>
         Are you sure you want to delete the task <span className="font-bold">{task.title}?</span>
       </p>
-      <button className="bg-red-500 text-white cursor-pointer rounded p-2" onClick={() => task && onDelete(task.id)}>
+      <Button variant="danger" onClick={() => task && onDelete(task.id)}>
         Delete
-      </button>
+      </Button>
     </Modal>
   )
 }

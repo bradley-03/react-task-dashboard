@@ -1,6 +1,7 @@
 import { EditTaskFormData, Task } from "../../../types/Task"
 import { useContext } from "react"
 import { TaskContext } from "../../../context/TaskContext"
+import Button from "../Button/Button"
 
 type EditTaskFormProps = {
   initialData: Task
@@ -78,9 +79,7 @@ export default function EditTaskForm({ initialData, onEdit }: EditTaskFormProps)
           <option value="Completed">Completed</option>
         </select>
         <br />
-        <button className="bg-blue-500 p-2 rounded text-white hover:bg-blue-600 transition cursor-pointer">
-          Update Task
-        </button>
+        <Button>Update Task</Button>
       </form>
     </div>
   )

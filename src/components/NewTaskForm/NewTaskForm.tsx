@@ -1,6 +1,7 @@
 import { useContext } from "react"
 import { TaskContext } from "../../../context/TaskContext"
 import { TaskFormData } from "../../../types/Task"
+import Button from "../Button/Button"
 
 export default function TaskForm() {
   const { createTask } = useContext(TaskContext)
@@ -40,9 +41,7 @@ export default function TaskForm() {
       <label htmlFor="due">Due</label>
       <br />
       <input type="date" name="due" id="due" />
-      <button className="bg-blue-500 p-2 rounded text-white hover:bg-blue-600 transition cursor-pointer">
-        Create Task
-      </button>
+      <Button>Create Task</Button>
     </form>
   )
 }

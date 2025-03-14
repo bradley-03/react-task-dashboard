@@ -1,6 +1,7 @@
 import { Task } from "../../../types/Task"
 import { FaRegEdit } from "react-icons/fa"
 import { MdOutlineDelete } from "react-icons/md"
+import Button from "../Button/Button"
 
 type TaskItemProps = {
   itemData: Task
@@ -28,12 +29,13 @@ export default function TaskItem({ itemData, onEdit, onDelete }: TaskItemProps) 
       </td>
       <td className="border-1 border-collapse">{itemData.status}</td>
       <td>
-        <button className="cursor-pointer text-2xl" onClick={() => onEdit(itemData.id)}>
+        <Button onClick={() => onEdit(itemData.id)} variant="ghost" size="icon">
           <FaRegEdit />
-        </button>
-        <button className="cursor-pointer text-2xl" onClick={() => onDelete(itemData.id)}>
+        </Button>
+
+        <Button onClick={() => onDelete(itemData.id)} variant="ghost" size="icon">
           <MdOutlineDelete />
-        </button>
+        </Button>
       </td>
     </tr>
   )

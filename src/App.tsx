@@ -4,6 +4,10 @@ import useDarkMode from "../hooks/useDarkMode"
 import KanbanBoard from "./components/KanbanBoard/KanbanBoard"
 import { useState } from "react"
 import NewTaskModal from "./components/Modals/NewTaskModal/NewTaskModal"
+import Button from "./components/Button/Button"
+
+import { FaRegMoon } from "react-icons/fa"
+import { IoSunnyOutline } from "react-icons/io5"
 
 function App() {
   const { darkMode, setDarkMode } = useDarkMode()
@@ -25,12 +29,17 @@ function App() {
   return (
     <TaskContextProvider>
       <NewTaskModal isOpen={createModalOpen} onClose={closeDeleteModal} />
+      <div className="flex gap-2 items-center justify-center">
+        <Button onClick={toggleDisplay}>{currentDisplay}</Button>
 
-      <button onClick={toggleDisplay}>{currentDisplay}</button>
-      <br></br>
-      <button onClick={() => setDarkMode(prev => !prev)}>Turn Dark Mode {darkMode ? "Off" : "On"}</button>
-      <br />
-      <button onClick={openCreateModal}>Create Task</button>
+        <Button variant="primary" onClick={openCreateModal}>
+          Create Task
+        </Button>
+
+        <Button onClick={() => setDarkMode(prev => !prev)} variant="ghost" size="icon">
+          {darkMode ? <IoSunnyOutline /> : <FaRegMoon />}
+        </Button>
+      </div>
 
       {currentDisplay === "kanban" ? <KanbanBoard /> : <TaskList />}
     </TaskContextProvider>
