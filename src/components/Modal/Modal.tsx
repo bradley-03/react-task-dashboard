@@ -1,4 +1,5 @@
 import { createPortal } from "react-dom"
+import { RxCross2 } from "react-icons/rx"
 
 type ModalProps = {
   isOpen: boolean
@@ -21,8 +22,8 @@ export default function Modal({ isOpen, onClose, title, children }: ModalProps) 
       <div className="bg-white p-6 rounded-lg shadow-lg w-96" onMouseDown={e => e.stopPropagation()}>
         <div className="flex justify-between items-center mb-4">
           {title && <h2 className="text-xl font-semibold">{title}</h2>}
-          <button onClick={onClose} className="cursor-pointer text-gray-600 hover:text-gray-900">
-            ✖
+          <button onClick={onClose} className="cursor-pointer text-black hover:text-gray-700 text-3xl">
+            <RxCross2 />
           </button>
         </div>
         <div>{children}</div>
