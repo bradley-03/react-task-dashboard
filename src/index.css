@@ -2,6 +2,10 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+* {
+  font-family: "Nunito Sans", sans-serif;
+}
+
 body {
   text-align: center;
 }
