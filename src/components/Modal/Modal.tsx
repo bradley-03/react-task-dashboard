@@ -24,7 +24,7 @@ export default function Modal({ isOpen, onClose, title, children }: ModalProps) 
         className="dark:bg-black dark:border-1 dark:border-neutral-600 dark:text-white bg-white text-black p-6 rounded-lg shadow-lg w-96"
         onMouseDown={e => e.stopPropagation()}
       >
-        <div className="flex justify-between items-start mb-4">
+        <div className="flex justify-between items-center mb-4">
           {title && <h2 className="text-xl font-semibold">{title}</h2>}
           <Button onClick={onClose} size="icon" variant="ghost">
             <RxCross2 />
