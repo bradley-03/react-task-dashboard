@@ -3,5 +3,5 @@ export default function Input({ type, ...props }: React.ComponentProps<"input">)
     props.className || ""
   }`
 
-  return <input type={type} className={inputStyles} {...props} />
+  return <input type={type} {...props} className={inputStyles} />
 }

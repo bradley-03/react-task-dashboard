@@ -2,7 +2,7 @@ export default function Label({ children, ...props }: React.ComponentProps<"labe
   const labelProps = `text-left text-md select-none ${props.className || ""}`
 
   return (
-    <label className={labelProps} {...props}>
+    <label {...props} className={labelProps}>
       {children}
     </label>
   )
