@@ -5,6 +5,8 @@ import Button from "../Button/Button"
 import Input from "../Input/Input"
 import Label from "../Label/Label"
 import Divider from "../Divider/Divider"
+import TextArea from "../TextArea/TextArea"
+import Select from "../Select/Select"
 
 export default function TaskForm() {
   const { createTask } = useContext(TaskContext)
@@ -31,16 +33,26 @@ export default function TaskForm() {
       </div>
       <div className="grid w-full max-w-sm items-center gap-1.5">
         <Label htmlFor="description">Description</Label>
-        <textarea className="border-1 rounded" name="description" id="description" />
+        <TextArea className="border-1 rounded" name="description" id="description" placeholder="Description" />
       </div>
       <div className="grid w-full max-w-sm items-center gap-1.5">
         <Label htmlFor="priority">Priority</Label>
 
-        <select defaultValue={"low"} className="border-1 rounded" name="priority" id="priority" required>
+        {/* <Select defaultValue={"low"} className="border-1 rounded" name="priority" id="priority" required>
           <option value="low">Low</option>
           <option value="medium">Medium</option>
           <option value="high">High</option>
-        </select>
+        </Select> */}
+        <Select
+          name="priority"
+          required
+          isSearchable={false}
+          options={[
+            { value: "low", label: "Low" },
+            { value: "medium", label: "Medium" },
+            { value: "high", label: "High" },
+          ]}
+        />
       </div>
 
       <div className="grid w-full max-w-sm items-center gap-1.5">
