@@ -2,6 +2,11 @@ import { EditTaskFormData, Task } from "../../../types/Task"
 import { useContext } from "react"
 import { TaskContext } from "../../../context/TaskContext"
 import Button from "../Button/Button"
+import Select from "../Select/Select"
+import Input from "../Input/Input"
+import TextArea from "../TextArea/TextArea"
+import Label from "../Label/Label"
+import Divider from "../Divider/Divider"
 
 type EditTaskFormProps = {
   initialData: Task
@@ -31,56 +36,67 @@ export default function EditTaskForm({ initialData, onEdit }: EditTaskFormProps)
     }
   }
 
+  const prioritySelectOptions = [
+    { value: "low", label: "Low" },
+    { value: "medium", label: "Medium" },
+    { value: "high", label: "High" },
+  ]
+
+  const statusSelectOptions = [
+    { value: "Pending", label: "Pending" },
+    { value: "In Progress", label: "In Progress" },
+    { value: "Completed", label: "Completed" },
+  ]
+
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="title">Title</label>
-        <br />
-        <input
-          className="border rounded focus:outline-0"
-          type="text"
-          name="title"
-          id="title"
-          defaultValue={initialData.title}
+    <form onSubmit={handleSubmit} className="flex flex-col items-start gap-2.5">
+      <div className="grid w-full max-w-sm items-center gap-1.5">
+        <Label htmlFor="title">Title</Label>
+        <Input type="text" name="title" id="title" defaultValue={initialData.title} required />
+      </div>
+
+      <div className="grid w-full max-w-sm items-center gap-1.5">
+        <Label htmlFor="description">Description</Label>
+        <TextArea name="description" id="description" defaultValue={initialData.description} />
+      </div>
+
+      <div className="grid w-full max-w-sm items-center gap-1.5">
+        <Label htmlFor="priority">Priority</Label>
+        <Select
+          isSearchable={false}
+          defaultValue={prioritySelectOptions.filter(opt => opt.value === initialData.priority)}
+          options={prioritySelectOptions}
+          name="priority"
+          id="priority"
           required
         />
-        <br />
-        <label htmlFor="description">Description</label>
-        <br />
-        <textarea
-          className="border-1 rounded"
-          name="description"
-          id="description"
-          defaultValue={initialData.description}
-        />
-        <br />
-        <label htmlFor="priority">Priority</label>
-        <br />
-        <select defaultValue={initialData.priority} className="border-1 rounded" name="priority" id="priority" required>
-          <option value="low">Low</option>
-          <option value="medium">Medium</option>
-          <option value="high">High</option>
-        </select>
-        <br />
-        <label htmlFor="due">Due</label>
-        <br />
-        <input
+      </div>
+
+      <div className="grid w-full max-w-sm items-center gap-1.5">
+        <Label htmlFor="due">Due</Label>
+        <Input
           defaultValue={initialData.due ? new Date(initialData.due).toISOString().split("T")[0] : ""}
           type="date"
           name="due"
           id="due"
         />
-        <br />
-        <label htmlFor="status">Status</label>
-        <br />
-        <select defaultValue={initialData.status} className="border-1 rounded" name="status" id="status" required>
-          <option value="Pending">Pending</option>
-          <option value="In Progress">In Progress</option>
-          <option value="Completed">Completed</option>
-        </select>
-        <br />
-        <Button>Update Task</Button>
-      </form>
-    </div>
+      </div>
+
+      <div className="grid w-full max-w-sm items-center gap-1.5">
+        <Label htmlFor="status">Status</Label>
+        <Select
+          isSearchable={false}
+          options={statusSelectOptions}
+          defaultValue={statusSelectOptions.filter(opt => opt.value === initialData.status)}
+          name="status"
+          id="status"
+          required
+        />
+      </div>
+      <Divider />
+      <div className="self-end">
+        <Button type="submit">Update Task</Button>
+      </div>
+    </form>
   )
 }

@@ -9,7 +9,7 @@ type NewTaskModalProps = {
 export default function NewTaskModal({ isOpen, onClose }: NewTaskModalProps) {
   return (
     <Modal title="Create Task" isOpen={isOpen} onClose={onClose}>
-      <NewTaskForm />
+      <NewTaskForm closeModal={onClose} />
     </Modal>
   )
 }

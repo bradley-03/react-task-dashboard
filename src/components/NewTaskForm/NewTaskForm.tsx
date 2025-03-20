@@ -8,7 +8,11 @@ import Divider from "../Divider/Divider"
 import TextArea from "../TextArea/TextArea"
 import Select from "../Select/Select"
 
-export default function TaskForm() {
+type TaskFormProps = {
+  closeModal: () => void
+}
+
+export default function TaskForm({ closeModal }: TaskFormProps) {
   const { createTask } = useContext(TaskContext)
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
@@ -23,6 +27,7 @@ export default function TaskForm() {
     }
 
     createTask(newTaskData)
+    closeModal()
   }
 
   return (
@@ -37,12 +42,6 @@ export default function TaskForm() {
       </div>
       <div className="grid w-full max-w-sm items-center gap-1.5">
         <Label htmlFor="priority">Priority</Label>
-
-        {/* <Select defaultValue={"low"} className="border-1 rounded" name="priority" id="priority" required>
-          <option value="low">Low</option>
-          <option value="medium">Medium</option>
-          <option value="high">High</option>
-        </Select> */}
         <Select
           name="priority"
           required
@@ -52,6 +51,7 @@ export default function TaskForm() {
             { value: "medium", label: "Medium" },
             { value: "high", label: "High" },
           ]}
+          defaultValue={{ value: "low", label: "Low" }}
         />
       </div>
 
