@@ -7,6 +7,7 @@ import Label from "../Label/Label"
 import Divider from "../Divider/Divider"
 import TextArea from "../TextArea/TextArea"
 import Select from "../Select/Select"
+import DatePicker from "../DatePicker/DatePicker"
 
 type TaskFormProps = {
   closeModal: () => void
@@ -57,7 +58,7 @@ export default function TaskForm({ closeModal }: TaskFormProps) {
 
       <div className="grid w-full max-w-sm items-center gap-1.5">
         <Label htmlFor="due">Due</Label>
-        <Input type="date" name="due" id="due" />
+        <DatePicker name="due" id="due" />
       </div>
 
       <Divider />
