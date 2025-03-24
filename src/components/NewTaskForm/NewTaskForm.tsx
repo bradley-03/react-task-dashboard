@@ -57,7 +57,9 @@ export default function TaskForm({ closeModal }: TaskFormProps) {
       </div>
 
       <div className="grid w-full max-w-sm items-center">
-        <Label htmlFor="due">Due</Label>
+        <Label htmlFor="due" className="mb-1.5">
+          Due
+        </Label>
         <DatePicker name="due" id="due" />
       </div>
 
