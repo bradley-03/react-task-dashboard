@@ -7,6 +7,7 @@ import Input from "../Input/Input"
 import TextArea from "../TextArea/TextArea"
 import Label from "../Label/Label"
 import Divider from "../Divider/Divider"
+import DatePicker from "../DatePicker/DatePicker"
 
 type EditTaskFormProps = {
   initialData: Task
@@ -72,14 +73,11 @@ export default function EditTaskForm({ initialData, onEdit }: EditTaskFormProps)
         />
       </div>
 
-      <div className="grid w-full max-w-sm items-center gap-1.5">
-        <Label htmlFor="due">Due</Label>
-        <Input
-          defaultValue={initialData.due ? new Date(initialData.due).toISOString().split("T")[0] : ""}
-          type="date"
-          name="due"
-          id="due"
-        />
+      <div className="grid w-full max-w-sm items-center">
+        <Label htmlFor="due" className="mb-1.5">
+          Due
+        </Label>
+        <DatePicker initialDate={initialData.due} dateFormat="dd/MM/yyyy" name="due" id="due" />
       </div>
 
       <div className="grid w-full max-w-sm items-center gap-1.5">

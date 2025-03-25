@@ -1,12 +1,18 @@
-import { default as RDatePicker } from "react-datepicker"
+import { DatePickerProps, default as RDatePicker } from "react-datepicker"
 import { FaRegCalendarAlt } from "react-icons/fa"
 import { useState } from "react"
 
 import "react-datepicker/dist/react-datepicker.css"
 import styles from "./DatePicker.module.css"
 
-export default function DatePicker({ ...props }) {
-  const [startDate, setStartDate] = useState<Date | null>(null)
+export default function DatePicker({
+  initialDate = null,
+  props,
+}: {
+  initialDate: Date | null
+  props: DatePickerProps
+}) {
+  const [startDate, setStartDate] = useState<Date | null>(initialDate)
 
   return (
     <RDatePicker
