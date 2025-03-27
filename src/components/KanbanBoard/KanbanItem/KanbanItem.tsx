@@ -15,7 +15,7 @@ export default function KanbanItem({ item }: KanbanItemProps) {
       : undefined
 
   return (
-    <div className="select-none cursor-grab touch-none shadow bg-white p-3 rounded-2xl">
+    <div className="dark:bg-neutral-600 dark:text-white text-black select-none cursor-grab touch-none shadow bg-white p-3 rounded-2xl">
       <h2>{item.title}</h2>
       <p>{item.description}</p>
       <p>{item.due && item.due.toLocaleString()}</p>
