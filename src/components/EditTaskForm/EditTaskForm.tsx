@@ -77,7 +77,7 @@ export default function EditTaskForm({ initialData, onEdit }: EditTaskFormProps)
         <Label htmlFor="due" className="mb-1.5">
           Due
         </Label>
-        <DatePicker initialDate={initialData.due} dateFormat="dd/MM/yyyy" name="due" id="due" />
+        <DatePicker initialDate={initialData.due} name="due" id="due" />
       </div>
 
       <div className="grid w-full max-w-sm items-center gap-1.5">
