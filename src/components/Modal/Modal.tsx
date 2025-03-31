@@ -20,7 +20,7 @@ export default function Modal({ isOpen, onClose, title, children }: ModalProps) 
 
   return createPortal(
     <div
-      className="fixed inset-0 flex items-center justify-center bg-black/50 overflow-y-auto"
+      className="fixed inset-0 flex items-center justify-center bg-black/50 overflow-y-auto z-10"
       onMouseDown={handleMouseDown}
     >
       <div
