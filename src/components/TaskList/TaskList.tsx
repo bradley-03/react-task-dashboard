@@ -1,4 +1,4 @@
-import { BaseSyntheticEvent, useContext, useState } from "react"
+import { useContext, useState } from "react"
 import { TaskContext } from "../../../context/TaskContext"
 import TaskListItem from "./TaskListItem"
 import Button from "../Button/Button"
@@ -6,6 +6,8 @@ import EditTaskModal from "../Modals/EditTaskModal/EditTaskModal"
 import DeleteTaskModal from "../Modals/DeleteTaskModal/DeleteTaskModal"
 import { Task } from "../../../types/Task"
 import { dueMethod, dueMethodAscending, nameMethod, priorityMethod } from "../../../util/sorting"
+import Select from "../Select/Select"
+import { SingleValue } from "react-select"
 
 type ModalState = {
   open: boolean
@@ -13,7 +15,8 @@ type ModalState = {
   action: "edit" | "delete" | undefined
 }
 
-type SortState = { direction: "up" | "down"; by: "unsorted" | "name" | "priority" | "due" }
+type SortByTypes = "unsorted" | "name" | "priority" | "due"
+type SortState = { direction: "up" | "down"; by: SortByTypes }
 
 function getSortedTasks(tasks: Task[], instructions: SortState) {
   switch (instructions.by) {
@@ -59,8 +62,8 @@ export default function TaskList() {
     setSortBy(old => ({ ...old, direction: old.direction === "up" ? "down" : "up" }))
   }
 
-  function handleSortByChange(event: BaseSyntheticEvent) {
-    setSortBy(old => ({ ...old, by: event.target.value }))
+  function handleSortByChange(newValue: SingleValue<{ value: string; label: string }>) {
+    setSortBy(old => ({ ...old, by: newValue ? newValue.value : "down" } as SortState))
   }
 
   function handleShowCompletedCheck() {
@@ -77,6 +80,13 @@ export default function TaskList() {
   }
 
   const totalTaskCount = Object.values(tasks).reduce((count, taskList) => count + taskList.length, 0)
+
+  const sortOptions = [
+    { value: "unsorted", label: "Unsorted" },
+    { value: "name", label: "Name" },
+    { value: "priority", label: "Priority" },
+    { value: "due", label: "Due" },
+  ]
 
   return (
     <div className="flex flex-col justify-center items-center">
@@ -104,12 +114,13 @@ export default function TaskList() {
           onChange={handleShowCompletedCheck}
         />
         <label htmlFor="sort-direction">Sort by</label>
-        <select name="sort-direction" id="sort-direction" value={sortBy.by} onChange={handleSortByChange}>
-          <option value="unsorted">Unsorted</option>
-          <option value="name">Name</option>
-          <option value="priority">Priority</option>
-          <option value="due">Due</option>
-        </select>
+        <Select
+          isSearchable={false}
+          id="sort-direction"
+          onChange={handleSortByChange}
+          value={sortOptions.filter(opt => opt.value === sortBy.by)}
+          options={sortOptions}
+        />
         <Button variant="link" onClick={handleSortDirectionChange}>
           {sortBy.direction}
         </Button>
