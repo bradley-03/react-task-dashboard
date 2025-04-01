@@ -10,6 +10,8 @@ import Select from "../Select/Select"
 import { SingleValue } from "react-select"
 import { FaSortAmountUp, FaSortAmountDown } from "react-icons/fa"
 import Label from "../Label/Label"
+import { TbFilter } from "react-icons/tb"
+import { FaPlus } from "react-icons/fa"
 
 type TaskListProps = {
   onCreateTask: () => void
@@ -116,8 +118,13 @@ export default function TaskList({ onCreateTask }: TaskListProps) {
       )}
 
       <div className="flex self-end gap-2 mb-2">
-        <Button onClick={onCreateTask}>Create Task</Button>
-        <Button onClick={toggleFiltersBar}>Toggle Filters</Button>
+        <Button onClick={onCreateTask} variant="outline">
+          <FaPlus />
+          New Task
+        </Button>
+        <Button onClick={toggleFiltersBar} size="icon" variant="outline">
+          <TbFilter />
+        </Button>
       </div>
 
       {showFiltersBar && (
