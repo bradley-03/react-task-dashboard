@@ -33,25 +33,28 @@ function App() {
     <TaskContextProvider>
       <NewTaskModal isOpen={createModalOpen} onClose={closeDeleteModal} />
       <div className="flex gap-2 items-center justify-center mt-3">
-        <Button variant="primary" onClick={openCreateModal}>
-          Create Task
-        </Button>
+        <div className="max-w-[75%]">
+          <div className="flex flex-row justify-center gap-2.5">
+            <h1 className="font-semibold">React Task Dashboard</h1>
+            <Button onClick={() => setDarkMode(prev => !prev)} variant="ghost" size="icon">
+              {darkMode ? <IoSunnyOutline /> : <FaRegMoon />}
+            </Button>
+          </div>
 
-        <ButtonGroup>
-          <Button disabled={currentDisplay === "list"} onClick={() => toggleDisplay("list")}>
-            <IoListOutline />
-          </Button>
-          <Button disabled={currentDisplay === "kanban"} onClick={() => toggleDisplay("kanban")}>
-            <BsPinAngle />
-          </Button>
-        </ButtonGroup>
+          <div className="flex flex-row justify-center">
+            <ButtonGroup>
+              <Button disabled={currentDisplay === "list"} onClick={() => toggleDisplay("list")}>
+                <IoListOutline />
+              </Button>
+              <Button disabled={currentDisplay === "kanban"} onClick={() => toggleDisplay("kanban")}>
+                <BsPinAngle />
+              </Button>
+            </ButtonGroup>
+          </div>
 
-        <Button onClick={() => setDarkMode(prev => !prev)} variant="ghost" size="icon">
-          {darkMode ? <IoSunnyOutline /> : <FaRegMoon />}
-        </Button>
+          {currentDisplay === "kanban" ? <KanbanBoard /> : <TaskList onCreateTask={openCreateModal} />}
+        </div>
       </div>
-
-      {currentDisplay === "kanban" ? <KanbanBoard /> : <TaskList />}
     </TaskContextProvider>
   )
 }

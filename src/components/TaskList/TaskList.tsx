@@ -8,6 +8,12 @@ import { Task } from "../../../types/Task"
 import { dueMethod, dueMethodAscending, nameMethod, priorityMethod } from "../../../util/sorting"
 import Select from "../Select/Select"
 import { SingleValue } from "react-select"
+import { FaSortAmountUp, FaSortAmountDown } from "react-icons/fa"
+import Label from "../Label/Label"
+
+type TaskListProps = {
+  onCreateTask: () => void
+}
 
 type ModalState = {
   open: boolean
@@ -33,11 +39,12 @@ function getSortedTasks(tasks: Task[], instructions: SortState) {
   }
 }
 
-export default function TaskList() {
+export default function TaskList({ onCreateTask }: TaskListProps) {
   const [modalData, setModalData] = useState<ModalState>({ open: false, task: undefined, action: undefined })
   const { tasks, deleteTask, findTaskById } = useContext(TaskContext)
   const [sortBy, setSortBy] = useState<SortState>({ by: "unsorted", direction: "down" })
   const [showCompleted, setShowCompleted] = useState<boolean>(false)
+  const [showFiltersBar, setShowFiltersBar] = useState<boolean>(false)
 
   function handleEdit(taskId: string) {
     const foundTask = findTaskById(taskId)
@@ -68,6 +75,10 @@ export default function TaskList() {
 
   function handleShowCompletedCheck() {
     setShowCompleted(old => !old)
+  }
+
+  function toggleFiltersBar() {
+    setShowFiltersBar(old => !old)
   }
 
   let sortedTasks = getSortedTasks(
@@ -104,27 +115,36 @@ export default function TaskList() {
         />
       )}
 
-      <div>
-        <label htmlFor="show-completed">Show Completed</label>
-        <input
-          type="checkbox"
-          name="show-completed"
-          id="show-completed"
-          checked={showCompleted}
-          onChange={handleShowCompletedCheck}
-        />
-        <label htmlFor="sort-direction">Sort by</label>
-        <Select
-          isSearchable={false}
-          id="sort-direction"
-          onChange={handleSortByChange}
-          value={sortOptions.filter(opt => opt.value === sortBy.by)}
-          options={sortOptions}
-        />
-        <Button variant="link" onClick={handleSortDirectionChange}>
-          {sortBy.direction}
-        </Button>
+      <div className="flex self-end gap-2 mb-2">
+        <Button onClick={onCreateTask}>Create Task</Button>
+        <Button onClick={toggleFiltersBar}>Toggle Filters</Button>
       </div>
+
+      {showFiltersBar && (
+        <div className="flex flex-row gap-2 self-end items-center shadow mb-2 border-1 border-neutral-600 rounded p-2">
+          <input
+            type="checkbox"
+            name="show-completed"
+            id="show-completed"
+            checked={showCompleted}
+            onChange={handleShowCompletedCheck}
+          />
+          <label htmlFor="show-completed">Show Completed</label>
+
+          <Label htmlFor="sort-direction">Sort by</Label>
+          <Select
+            isSearchable={false}
+            id="sort-direction"
+            onChange={handleSortByChange}
+            value={sortOptions.filter(opt => opt.value === sortBy.by)}
+            options={sortOptions}
+          />
+
+          <Button variant="ghost" size="icon" onClick={handleSortDirectionChange}>
+            {sortBy.direction === "up" ? <FaSortAmountUp /> : <FaSortAmountDown />}
+          </Button>
+        </div>
+      )}
 
       <table>
         <thead>
