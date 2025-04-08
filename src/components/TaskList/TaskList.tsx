@@ -128,7 +128,7 @@ export default function TaskList({ onCreateTask }: TaskListProps) {
       </div>
 
       {showFiltersBar && (
-        <div className="flex flex-row gap-2 self-end items-center shadow mb-2 border-1 border-neutral-600 rounded p-2">
+        <div className="flex flex-row gap-2 self-end justify-end items-center shadow mb-2 border-1 border-neutral-600 rounded p-2 w-full">
           <input
             type="checkbox"
             name="show-completed"
@@ -140,6 +140,7 @@ export default function TaskList({ onCreateTask }: TaskListProps) {
 
           <Label htmlFor="sort-direction">Sort by</Label>
           <Select
+            className="w-40"
             isSearchable={false}
             id="sort-direction"
             onChange={handleSortByChange}
