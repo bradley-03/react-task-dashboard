@@ -32,28 +32,26 @@ function App() {
   return (
     <TaskContextProvider>
       <NewTaskModal isOpen={createModalOpen} onClose={closeDeleteModal} />
-      <div className="flex gap-2 items-center justify-center mt-3">
-        <div className="max-w-[75%]">
-          <div className="flex flex-row justify-center gap-2.5">
-            <h1 className="font-semibold">React Task Dashboard</h1>
-            <Button onClick={() => setDarkMode(prev => !prev)} variant="ghost" size="icon">
-              {darkMode ? <IoSunnyOutline /> : <FaRegMoon />}
-            </Button>
-          </div>
-
-          <div className="flex flex-row justify-center">
-            <ButtonGroup>
-              <Button disabled={currentDisplay === "list"} onClick={() => toggleDisplay("list")}>
-                <IoListOutline />
-              </Button>
-              <Button disabled={currentDisplay === "kanban"} onClick={() => toggleDisplay("kanban")}>
-                <BsPinAngle />
-              </Button>
-            </ButtonGroup>
-          </div>
-
-          {currentDisplay === "kanban" ? <KanbanBoard /> : <TaskList onCreateTask={openCreateModal} />}
+      <div className="flex flex-col gap-2 items-center justify-center mt-3">
+        <div className="flex flex-row justify-center gap-2.5">
+          <h1 className="font-semibold">React Task Dashboard</h1>
+          <Button onClick={() => setDarkMode(prev => !prev)} variant="ghost" size="icon">
+            {darkMode ? <IoSunnyOutline /> : <FaRegMoon />}
+          </Button>
         </div>
+
+        <div className="flex flex-row justify-center">
+          <ButtonGroup>
+            <Button disabled={currentDisplay === "list"} onClick={() => toggleDisplay("list")}>
+              <IoListOutline />
+            </Button>
+            <Button disabled={currentDisplay === "kanban"} onClick={() => toggleDisplay("kanban")}>
+              <BsPinAngle />
+            </Button>
+          </ButtonGroup>
+        </div>
+
+        {currentDisplay === "kanban" ? <KanbanBoard /> : <TaskList onCreateTask={openCreateModal} />}
       </div>
     </TaskContextProvider>
   )

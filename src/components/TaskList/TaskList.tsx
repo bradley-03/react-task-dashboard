@@ -12,6 +12,7 @@ import { FaSortAmountUp, FaSortAmountDown } from "react-icons/fa"
 import Label from "../Label/Label"
 import { TbFilter } from "react-icons/tb"
 import { FaPlus } from "react-icons/fa"
+import Table from "../Table/Table"
 
 type TaskListProps = {
   onCreateTask: () => void
@@ -154,24 +155,23 @@ export default function TaskList({ onCreateTask }: TaskListProps) {
         </div>
       )}
 
-      <table>
-        <thead>
-          <tr className="bg-gray-200 border-1 border-collapse">
-            <th className="border-1 border-collapse">Title</th>
-            <th className="border-1 border-collapse">Description</th>
-            <th className="border-1 border-collapse">Priority</th>
-            <th className="border-1 border-collapse">Due</th>
-            <th className="border-1 border-collapse">Status</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
+      <Table>
+        <Table.Head>
+          <Table.Row>
+            <Table.Header>Task</Table.Header>
+            <Table.Header>Priority</Table.Header>
+            <Table.Header>Due</Table.Header>
+            <Table.Header>Status</Table.Header>
+            <Table.Header>Actions</Table.Header>
+          </Table.Row>
+        </Table.Head>
+        <Table.Body>
           {sortedTasks &&
             sortedTasks.map(task => (
               <TaskListItem key={task.id} itemData={task} onEdit={handleEdit} onDelete={handleDeleteModal} />
             ))}
-        </tbody>
-      </table>
+        </Table.Body>
+      </Table>
     </div>
   )
 }
